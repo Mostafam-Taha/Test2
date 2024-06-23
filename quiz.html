@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>صفحة الأسئلة</title>
+    <!-- روابط الخطوط -->
+    <link rel="stylesheet" type="text/css" href="https://www.fontstatic.com/f=thuluth-decorated" />
+    <link rel="stylesheet" type="text/css" href="https://www.fontstatic.com/f=cairo-bold" />
+    <!-- الأنماط الرئيسية -->
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            direction: rtl; /* التأكد من اتجاه النص من اليمين إلى اليسار */
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0; /* لون خلفية الصفحة */
+        }
+        .header {
+            background-color: #ffffff; /* لون خلفية الترويسة */
+            padding: 10px 20px;
+            border-bottom: 1px solid #ddd;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* ظل تحت الترويسة */
+        }
+        .header h1 {
+            font-size: 24px; /* حجم الخط لاسم الموقع */
+            margin: 0;
+        }
+        .header .left-section {
+            display: flex;
+            align-items: center;
+        }
+        .header .left-section nav {
+            display: flex;
+            align-items: center;
+        }
+        .header .username {
+            margin-right: 20px;
+            font-size: 18px;
+        }
+        .header nav a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: #000;
+            font-size: 18px;
+        }
+        .dropdown {
+            position: relative;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            min-width: 160px;
+            right: 0; /* تأكد من اتجاه القائمة المنسدلة */
+            border-radius: 5px; /* إضافة الزوايا الدائرية */
+        }
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            margin: 7px 0; /* إضافة الهوامش */
+            border-radius: 5px; /* إضافة الزوايا الدائرية */
+        }
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        .dropdown:hover .dropbtn {
+            background-color: #3e8e41;
+            border-radius: 5px; /* إضافة الزوايا الدائرية */
+            color: white; /* تغيير لون النص */
+        }
+        .dropbtn {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+        }
+        .questions-section {
+            padding: 20px;
+            margin-top: 80px; /* تعديل المسافة بين الترويسة والمحتوى */
+        }
+        .question-container {
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #fff; /* لون خلفية السؤال */
+        }
+        .correct-answer {
+            background-color: lightgreen;
+            border-radius: 5px; /* إضافة الزوايا الدائرية */
+        }
+        .wrong-answer {
+            background-color: lightcoral;
+            border-radius: 5px; /* إضافة الزوايا الدائرية */
+        }
+        .options {
+            list-style-type: none; /* إزالة نقاط القائمة */
+            padding: 0;
+        }
+        .options li {
+            margin-bottom: 10px; /* المسافة بين الخيارات */
+            cursor: pointer;
+            font-size: 18px;
+        }
+        button {
+            background-color: #4CAF50; /* لون خلفية الزر */
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin-top: 20px; /* المسافة بين الأسئلة والزر */
+            border: none;
+            border-radius: 5px; /* إضافة الزوايا الدائرية */
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049; /* لون خلفية الزر عند التحويل */
+        }
+
+        /* وسائط الاستجابة */
+        @media screen and (max-width: 1024px) {
+            .header {
+                flex-direction: column;
+                padding: 10px;
+                text-align: center;
+            }
+            .header h1 {
+                margin: 0;
+                margin-bottom: 10px;
+            }
+            .header .left-section {
+                width: 100%;
+                justify-content: center;
+                margin-bottom: 10px;
+            }
+            .header nav {
+                justify-content: center;
+            }
+            .header .username {
+                margin-right: 0;
+            }
+            .questions-section {
+                margin-top: 140px; /* تعديل المسافة بين الترويسة والمحتوى */
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                padding: 10px;
+                text-align: center;
+            }
+            .header h1 {
+                margin: 0;
+                margin-bottom: 10px;
+            }
+            .header .left-section {
+                width: 100%;
+                justify-content: center;
+                margin-bottom: 10px;
+            }
+            .header nav {
+                justify-content: center;
+            }
+            .header .username {
+                margin-right: 0;
+            }
+            .questions-section {
+                margin-top: 160px; /* تعديل المسافة بين الترويسة والمحتوى */
+                padding: 10px;
+            }
+            .question-container {
+                padding: 10px;
+            }
+            .options li {
+                font-size: 16px;
+            }
+            button {
+                font-size: 14px;
+                padding: 12px 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <div class="left-section">
+        <div class="username">مرحباً</div>
+    </div>
+    <div class="left-section">
+        <nav>
+            <a href="#">الصفحة الرئيسية</a>
+            <a href="#">الأحاديث</a>
+            <div class="dropdown">
+                <button class="dropbtn">المزيد</button>
+                <div class="dropdown-content">
+                    <a href="#">القرآن</a>
+                    <a href="#">عن الموقع</a>
+                    <a href="#">اتصل بنا</a>
+                </div>
+            </div>
+        </nav>
+    </div>
+</header>
+
+<section class="questions-section">
+    <div class="container">
+        <div class="questions">
+            <!-- سؤال نموذجي -->
+            <div class="question-container">
+                <div class="question" id="question1">
+                    <h3>ما هو أول رمضان في الإسلام؟</h3>
+                    <ul class="options">
+                        <li><input type="radio" name="q1" value="a"> عام الفيل</li>
+                        <li><input type="radio" name="q1" value="b"> عام الفرقان</li>
+                        <li><input type="radio" name="q1" value="c"> عام النبي صلى الله عليه وسلم</li>
+                        <li><input type="radio" name="q1" value="d"> عام العقد الذي عرضه النبي صلى الله عليه وسلم</li>
+                    </ul>
+                    <p class="feedback" id="feedback1"></p>
+                </div>
+            </div>
+
+            <!-- يمكنك تكرار هذا القالب لإضافة المزيد من الأسئلة -->
+
+            <div class="question-container">
+                <div class="question" id="question1">
+                    <h3>ما هو أول رمضان في الإسلام؟</h3>
+                    <ul class="options">
+                        <li><input type="radio" name="q1" value="a"> عام الفيل</li>
+                        <li><input type="radio" name="q1" value="b"> عام الفرقان</li>
+                        <li><input type="radio" name="q1" value="c"> عام النبي صلى الله عليه وسلم</li>
+                        <li><input type="radio" name="q1" value="d"> عام العقد الذي عرضه النبي صلى الله عليه وسلم</li>
+                    </ul>
+                    <p class="feedback" id="feedback1"></p>
+                </div>
+            </div>
+
+        </div>
+
+        <button onclick="submitQuiz()">تقديم الإجابات</button>
+    </div>
+</section>
+
+<script>
+function submitQuiz() {
+    const correctAnswers = {
+        q1: 'b', // جواب السؤال الأول
+        // يمكنك إضافة المزيد من الأسئلة هنا
+    };
+
+    const userAnswers = {
+        q1: document.querySelector('input[name="q1"]:checked'),
+        // يمكنك إضافة المزيد من الأسئلة هنا
+    };
+
+    if (!userAnswers.q1) {
+        alert('الرجاء الإجابة على جميع الأسئلة!');
+        return;
+    }
+
+    let score = 0;
+    for (const [question, correctAnswer] of Object.entries(correctAnswers)) {
+        const userAnswer = userAnswers[question];
+        const options = document.querySelectorAll(`input[name="${question}"]`);
+
+        // إزالة الفئات السابقة
+        options.forEach(option => {
+            option.parentNode.classList.remove('correct-answer', 'wrong-answer');
+        });
+
+        if (userAnswer.value === correctAnswer) {
+            score += 5;
+            userAnswer.parentNode.classList.add('correct-answer');
+        } else {
+            score -= 1;
+            userAnswer.parentNode.classList.add('wrong-answer');
+            document.querySelector(`input[name="${question}"][value="${correctAnswer}"]`).parentNode.classList.add('correct-answer');
+        }
+    }
+
+    alert('لقد حصلت على ' + score + ' نقطة من أصل ' + (Object.keys(correctAnswers).length * 5) + ' نقطة.');
+}
+</script>
+
+</body>
+</html>
